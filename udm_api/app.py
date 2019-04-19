@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-import datetime
 import logging
 
 import connexion
 from connexion import NoContent
 
 
-
-def getSupiById(id):
+def getSupiById(supi):
     return NoContent, 200
 
 
@@ -31,9 +29,17 @@ def putRegistrationAmfNon3gppAccess():
     return NoContent, 200
 
 
+def patchRegistrationAmfNon3gppAccess():
+    return NoContent, 200
+
+
+def getRegistrationAmfNon3gppAccess(ueId):
+    return NoContent, 200
+
+
 logging.basicConfig(level=logging.INFO)
 app = connexion.App(__name__, specification_dir='openapi/')
-# app.add_api('TS29503_Nudm_UECM.yaml')
+app.add_api('TS29503_Nudm_UECM.yaml')
 app.add_api('TS29503_Nudm_SDM.yaml')
 
 # set the WSGI application callable to allow using uWSGI:
