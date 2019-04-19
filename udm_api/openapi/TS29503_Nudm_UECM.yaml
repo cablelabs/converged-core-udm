@@ -25,7 +25,7 @@ paths:
   /{ueId}/registrations/amf-non-3gpp-access:
     put:
       summary: register as AMF for non-3GPP access
-      operationId: putRegistrationAmfNon3gppAccess
+      operationId: app.putRegistrationAmfNon3gppAccess
       tags:
         - AMF registration for non-3GPP access
       parameters:
@@ -76,7 +76,7 @@ paths:
           description: Unexpected error
     patch:
       summary: update a parameter in the AMF registration for non-3GPP access
-      operationId: patchRegistrationAmfNon3gppAccess
+      operationId: app.patchRegistrationAmfNon3gppAccess
       tags:
         - Parameter update in the AMF registration for non-3GPP access
       parameters:
@@ -113,7 +113,7 @@ paths:
           description: Unexpected error
     get:
       summary: retrieve the AMF registration for non-3GPP access information
-      operationId: getRegistrationAmfNon3gppAccess
+      operationId: app.getRegistrationAmfNon3gppAccess
       tags:
         - AMF non-3GPP-access Registration Info  Retrieval
       parameters:
