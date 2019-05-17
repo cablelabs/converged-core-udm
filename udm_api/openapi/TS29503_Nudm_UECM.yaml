@@ -16,10 +16,10 @@ servers:
         default: https://example.com
         description: apiRoot as defined in subclause subclause 4.4 of 3GPP TS 29.501.
 
-security:
-  - oAuth2ClientCredentials:
-    - nudm-uecm
-  - {}
+#security:
+#  - oAuth2ClientCredentials:
+#    - nudm-uecm
+#  - {}
 
 paths:
   /{ueId}/registrations/amf-non-3gpp-access:
@@ -34,7 +34,7 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
+            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
       requestBody:
         content:
           application/json:
@@ -63,15 +63,15 @@ paths:
         '204':
           description: No Content
         '400':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/400'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
         '403':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/403'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/403'
         '404':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/404'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/404'
         '500':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/500'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
         '503':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/503'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
         default:
           description: Unexpected error
     patch:
@@ -85,7 +85,7 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
+            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
       requestBody:
         content:
           application/merge-patch+json:
@@ -96,19 +96,19 @@ paths:
         '204':
           description: Expected response to a valid request
         '400':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/400'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
         '404':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/404'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/404'
         '422':
           description: Unprocessable Request
           content:
             application/problem+json:
               schema:
-                $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/ProblemDetails'
+                $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/ProblemDetails'
         '500':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/500'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
         '503':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/503'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
         default:
           description: Unexpected error
     get:
@@ -122,11 +122,11 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/Gpsi'
+            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Gpsi'
         - name: supported-features
           in: query
           schema:
-            $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
+            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
       responses:
         '200':
           description: Expected response to a valid request
@@ -135,15 +135,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/AmfNon3GppAccessRegistration'
         '400':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/400'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
         '403':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/403'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/403'
         '404':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/404'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/404'
         '500':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/500'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
         '503':
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/responses/503'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
         default:
           description: Unexpected error
 
@@ -171,26 +171,26 @@ components:
         - ratType
       properties:
         amfInstanceId:
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/NfInstanceId'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/NfInstanceId'
         supportedFeatures:
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
         purgeFlag:
           $ref: '#/components/schemas/PurgeFlag'
         pei:
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/Pei'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Pei'
         imsVoPs:
           $ref: '#/components/schemas/ImsVoPs'
         deregCallbackUri:
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/Uri'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Uri'
         guami:
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/Guami'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Guami'
         backupAmfInfo:
           type: array
           items:
-            $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/BackupAmfInfo'
+            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/BackupAmfInfo'
           minItems: 1
         ratType:
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/RatType'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/RatType'
 
 
     AmfNon3GppAccessRegistrationModification:
@@ -199,15 +199,15 @@ components:
         - guami
       properties:
         guami:
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/Guami'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Guami'
         purgeFlag:
           $ref: '#/components/schemas/PurgeFlag'
         pei:
-          $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/Pei'
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Pei'
         backupAmfInfo:
           type: array
           items:
-            $ref: 'file:///home/dschrimpsher/PycharmProjects/converged-core-udm/udm_api/openapi/TS29571_CommonData.yaml#/components/schemas/BackupAmfInfo'
+            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/BackupAmfInfo'
 
 # SIMPLE TYPES:
 
