@@ -16,10 +16,10 @@ servers:
         default: https://example.com
         description: apiRoot as defined in subclause subclause 4.4 of 3GPP TS 29.501.
 
-security:
-  - oAuth2ClientCredentials:
-    - nudm-uecm
-  - {}
+#security:
+#  - oAuth2ClientCredentials:
+#    - nudm-uecm
+#  - {}
 
 paths:
   /{ueId}/registrations/amf-non-3gpp-access:
