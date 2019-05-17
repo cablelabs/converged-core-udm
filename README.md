@@ -20,9 +20,18 @@ Here are some notes from @dschrimpsher:
 3. I used a virtual env in pycharm. So you may need to do a pip install or whatever you normally do and get all the libraries.  I will (soon) setup a requirements, setup.cfg and such so that goes away but ...
 
 
-## To build and run with Docker, execute:
+## To build with Docker, execute:
 
 ```bash
 docker build -t udm_api .
+```
+
+### To run in the foreground and remove when stopped:
+```bash
+docker run -it --rm -p 8080:8080 udm_api
+```
+
+### To run in background:
+```bash
 docker run -d --name udm_api -p 8080:8080 udm_api
 ```
