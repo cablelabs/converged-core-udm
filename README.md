@@ -23,15 +23,22 @@ Here are some notes from @dschrimpsher:
 ## To build with Docker, execute:
 
 ```bash
-docker build -t udm_api .
+docker build -t convergedcore/udm_api .
 ```
 
 ### To run in the foreground and remove when stopped:
 ```bash
-docker run -it --rm -p 8080:8080 udm_api
+docker run -it --rm -p 8080:8080 convergedcore/udm_api
 ```
 
 ### To run in background:
 ```bash
-docker run -d --name udm_api -p 8080:8080 udm_api
+docker run -d --name udm_api -p 8080:8080 convergedcore/udm_api
 ```
+
+## Swagger UI
+
+The Swagger UI is available for both the NUDM-UECM and the NUDM-SDM. Assuming the API is running on localhost:8080, the endpoints are:
+
+  * http://localhost:8080/nudm-uecm/v1/ui/
+  * http://localhost:8080/nudm-sdm/v1/ui/
