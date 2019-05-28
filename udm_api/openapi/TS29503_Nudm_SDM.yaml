@@ -35,9 +35,8 @@ paths:
           required: true
           schema:
             $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
-        - name: dataset-names
+        - name: dataset_names
           in: query
-          style: form
           explode: false
           description: List of dataset names
           required: true
@@ -491,15 +490,4 @@ components:
 # ENUMS:
 
     DataSetName:
-      anyOf:
-        - type: string
-          enum:
-          - AM
-          - SMF_SEL
-          - UEC_SMF
-          - UEC_SMSF
-          - SMS_SUB
-          - SM
-          - TRACE
-          - SMS_MNG
-        - type: string
+      type: string

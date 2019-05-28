@@ -5,4 +5,6 @@ RUN pip install -r requirements.txt
 
 ADD udm_api/ /
 
+
+
 ENTRYPOINT [ "python", "app.py" ]
