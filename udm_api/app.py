@@ -1,19 +1,24 @@
 #!/usr/bin/env python3
+import json
 import logging
-import os
 from pprint import pprint
 
 import connexion
 from connexion import NoContent
 from pymongo import MongoClient
-
+import os
 cwd = os.getcwd()
 
 
-def getSupiById(supi, dataset_names=None):
-    pprint(supi)
-    pprint(dataset_names)
-    return NoContent, 200
+def getSupiById(supi, dataset_names):
+    logging.info(supi)
+    logging.info(dataset_names)
+    document = db.subscription_data_sets.find_one({'supi': supi})
+    if document is None:
+        return document, 404
+    else:
+        del document['_id']
+        return document, 200
 
 
 def getSupiNssai():
@@ -45,9 +50,6 @@ def getRegistrationAmfNon3gppAccess(ueId):
 
 
 logging.basicConfig(level=logging.INFO)
-# pprint(cwd)
-# spec = 'file:///' + cwd + '/openapi/'
-# pprint(spec)
 spec = '/openapi/'
 try:
     app = connexion.App(__name__, specification_dir=spec)
@@ -64,10 +66,12 @@ except Exception as e:
 client = MongoClient('mongodb://mongodb:27017/')
 db = client.udm
 
+with open(cwd + 'supi.json') as json_file:
+    json_data = json.load(json_file)
+    logging.info(json_data)
+    db.subscription_data_sets.insert(json_data)
+
+
 if __name__ == '__main__':
     # run our standalone gevent server
-    try:
-        app.run(port=8080, server='gevent')
-    except Exception as e:
-        pprint(e)
-        pprint(e.with_traceback())
+    app.run(port=8080, server='gevent')

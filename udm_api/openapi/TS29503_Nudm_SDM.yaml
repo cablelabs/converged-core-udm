@@ -45,10 +45,8 @@ paths:
         - name: plmn-id
           in: query
           description: serving PLMN ID
-          content:
-            application/json:
-              schema:
-                $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
+          schema:
+              $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
         - name: supported-features
           in: query
           description: Supported Features
@@ -358,6 +356,8 @@ components:
     SubscriptionDataSets:
       type: object
       properties:
+        supi:
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
         amData:
           $ref: '#/components/schemas/AccessAndMobilitySubscriptionData'
         uecSmfData:
@@ -491,3 +491,16 @@ components:
 
     DataSetName:
       type: string
+
+# anyOf:
+#       - type: string
+#         enum:
+#         - AM
+#         - SMF_SEL
+#         - UEC_SMF
+#         - UEC_SMSF
+#         - SMS_SUB
+#         - SM
+#         - TRACE
+#         - SMS_MNG
+#       - type: string
