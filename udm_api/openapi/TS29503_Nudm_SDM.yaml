@@ -113,10 +113,8 @@ paths:
         - name: plmn-id
           in: query
           description: serving PLMN ID
-          content:
-            application/json:
-              schema:
-                $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
+          schema:
+            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
         - name: If-None-Match
           in: header
           description: Validator for conditional requests, as described in RFC 7232, 3.2

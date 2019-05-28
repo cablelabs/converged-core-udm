@@ -21,8 +21,13 @@ def getSupiById(supi, dataset_names):
         return document, 200
 
 
-def getSupiNssai():
-    return NoContent, 200
+def getSupiNssai(supi):
+    document = db.subscription_data_sets.find_one({'supi': supi})
+    if document is None:
+        return document, 404
+    else:
+        nassi = document['amData']['nssai']
+        return nassi, 200
 
 
 def getSupiAmData():
