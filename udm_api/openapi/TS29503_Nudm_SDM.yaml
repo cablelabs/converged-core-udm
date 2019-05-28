@@ -35,7 +35,7 @@ paths:
           required: true
           schema:
             $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
-        - name: dataset_names
+        - name: dataset-names
           in: query
           explode: false
           description: List of dataset names

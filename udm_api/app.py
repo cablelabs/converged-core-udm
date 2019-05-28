@@ -10,9 +10,7 @@ import os
 cwd = os.getcwd()
 
 
-def getSupiById(supi, dataset_names):
-    logging.info(supi)
-    logging.info(dataset_names)
+def getSupiById(supi):
     document = db.subscription_data_sets.find_one({'supi': supi})
     if document is None:
         return document, 404
