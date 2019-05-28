@@ -28,9 +28,13 @@ def getSupiNssai(supi):
         return nassi, 200
 
 
-def getSupiAmData():
-    return NoContent, 200
-
+def getSupiAmData(supi):
+    document = db.subscription_data_sets.find_one({'supi': supi})
+    if document is None:
+        return document, 404
+    else:
+        am = document['amData']
+        return am, 200
 
 def postSupiSdmSubscriptions():
     return NoContent, 200
