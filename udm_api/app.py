@@ -50,20 +50,14 @@ class Monitor(threading.Thread):
                 for change in stream:
                     logging.info(change)
                     changes = []
-                    logging.error(change['updateDescription']['updatedFields'])
                     for k, v in change['updateDescription']['updatedFields'].items():
-                        logging.error(k)
-                        logging.error(v)
                         changeItem = dict(op='MOVE', path=k, newValue=v)
                         changes.append(changeItem)
-                    logging.error('End Loop')
                     notifyItem = dict(resourceId='/' + self.supi, changes=changes)
                     notifyItems = [notifyItem]
                     document = dict(notifyItems=notifyItems)
-                    logging.info('WTF')
                     logging.info(document)
                     self.post(document)
-                    logging.info('WTF2')
 
     def stop(self):
         self.running = False
@@ -124,11 +118,15 @@ def postSupiSdmSubscriptions(supi, body):
     del document['_id']
     monitor = Monitor(supi, db, subscriptionId, body['callbackUri'])
     monitor.start()
+    monitor_map.append({'subscriptionId': subscriptionId, 'monitor': monitor})
     return document, 201
 
 
-def deleteSupiSubscriptionById():
-    return NoContent, 200
+def deleteSupiSubscriptionById(supi, subscriptionId):
+    for monitor in monitor_map:
+        if monitor['subscriptionId'] is subscriptionId:
+            monitor['monitor'].stop()
+    return NoContent, 204
 
 
 def putRegistrationAmfNon3gppAccess():
@@ -143,6 +141,7 @@ def getRegistrationAmfNon3gppAccess(ueId):
     return NoContent, 200
 
 
+monitor_map = []
 logging.basicConfig(level=logging.INFO)
 spec = '/openapi/'
 try:
