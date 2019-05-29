@@ -1,0 +1,14 @@
+{
+  "nfInstanceId": "394f1119-8724-4084-a839-daf427979ca1",
+  "implicitUnsubscribe": false,
+  "expires": "2008-09-15T15:53:00",
+  "amfServiceName": "Special Service",
+  "callbackUri": "http://localhost:5000/call-me",
+  "monitoredResourceUri": [
+    "http://localhost:6000/monitor-me"
+  ],
+  "singleNssai": {
+    "sst": 100,
+    "sd": "Mobile backhaul and eMBB concurrently, where eMBB is the default"
+  }
+}

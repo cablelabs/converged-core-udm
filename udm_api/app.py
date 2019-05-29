@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 import json
 import logging
+import os
+import uuid
 from pprint import pprint
 
 import connexion
 from connexion import NoContent
 from pymongo import MongoClient
-import os
+
 cwd = os.getcwd()
 
 
@@ -36,8 +38,13 @@ def getSupiAmData(supi):
         am = document['amData']
         return am, 200
 
-def postSupiSdmSubscriptions():
-    return NoContent, 200
+
+def postSupiSdmSubscriptions(supi, body):
+    body['subscriptionId'] = uuid.uuid4()
+    id = db.supi_sdm_subscriptions.insert_one(body).inserted_id
+    document = db.supi_sdm_subscriptions.find_one({'_id': id})
+    del document['_id']
+    return document, 201
 
 
 def deleteSupiSubscriptionById():
@@ -76,8 +83,7 @@ db = client.udm
 with open(cwd + 'supi.json') as json_file:
     json_data = json.load(json_file)
     logging.info(json_data)
-    db.subscription_data_sets.insert(json_data)
-
+    db.subscription_data_sets.insert_one(json_data)
 
 if __name__ == '__main__':
     # run our standalone gevent server
