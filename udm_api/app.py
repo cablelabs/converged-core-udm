@@ -2,14 +2,85 @@
 import json
 import logging
 import os
+import threading
 import uuid
 from pprint import pprint
+from random import randint
 
 import connexion
 from connexion import NoContent
 from pymongo import MongoClient
 
 cwd = os.getcwd()
+
+# Copyright 2018 Cable Television Laboratories, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+import requests
+import urllib3
+
+urllib3.disable_warnings()
+logger = logging.getLogger('drp-session')
+
+
+class Monitor(threading.Thread):
+    def __init__(self, supi, db, subscriptionId, callback):
+        threading.Thread.__init__(self)
+        self.supi = supi
+        self.db = db
+        self.subscriptionId = subscriptionId
+        self.running = True
+        self.callback = callback
+
+    def run(self):
+        while self.running:
+            with self.db.subscription_data_sets.watch([], full_document='default') as stream:
+                for change in stream:
+                    logging.info(change)
+                    changes = []
+                    logging.error(change['updateDescription']['updatedFields'])
+                    for k, v in change['updateDescription']['updatedFields'].items():
+                        logging.error(k)
+                        logging.error(v)
+                        changeItem = dict(op='MOVE', path=k, newValue=v)
+                        changes.append(changeItem)
+                    logging.error('End Loop')
+                    notifyItem = dict(resourceId='/' + self.supi, changes=changes)
+                    notifyItems = [notifyItem]
+                    document = dict(notifyItems=notifyItems)
+                    logging.info('WTF')
+                    logging.info(document)
+                    self.post(document)
+                    logging.info('WTF2')
+
+    def stop(self):
+        self.running = False
+
+    def post(self, body):
+        r = requests.post(self.callback, json=body, verify=False)
+        if r.status_code == 201 or r.status_code == 200:
+            return r.json()
+        else:
+            logger.error('Error on Post ' + str(r.status_code))
+            temp = r.json()
+            if body.get('Name') is not None:
+                raise Exception(body['Name'],
+                                str(temp['Messages'][0]))
+            else:
+                raise Exception(body['Addr'],
+                                str(temp['Messages'][0]))
 
 
 def getSupiById(supi):
@@ -19,6 +90,12 @@ def getSupiById(supi):
     else:
         del document['_id']
         return document, 200
+
+
+def postTemp(supi):
+    result = db.subscription_data_sets.update_one({'supi': supi}, {'$set': {'x': randint(0, 100)}})
+    logging.info(result.modified_count)
+    return result.modified_count, 201
 
 
 def getSupiNssai(supi):
@@ -40,10 +117,13 @@ def getSupiAmData(supi):
 
 
 def postSupiSdmSubscriptions(supi, body):
-    body['subscriptionId'] = uuid.uuid4()
+    subscriptionId = uuid.uuid4()
+    body['subscriptionId'] = subscriptionId
     id = db.supi_sdm_subscriptions.insert_one(body).inserted_id
     document = db.supi_sdm_subscriptions.find_one({'_id': id})
     del document['_id']
+    monitor = Monitor(supi, db, subscriptionId, body['callbackUri'])
+    monitor.start()
     return document, 201
 
 
@@ -74,15 +154,19 @@ try:
     # uwsgi --http :8080 -w app
     application = app.app
 except Exception as e:
-    pprint(e)
+    logging.error(e)
+
+# wait for the dbs to come up <grumble>
+from time import sleep
+
+sleep(20)
 
 # connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
-client = MongoClient('mongodb://mongodb:27017/')
+client = MongoClient('mongodb://db01:27017/')
 db = client.udm
 
 with open(cwd + 'supi.json') as json_file:
     json_data = json.load(json_file)
-    logging.info(json_data)
     db.subscription_data_sets.insert_one(json_data)
 
 if __name__ == '__main__':
