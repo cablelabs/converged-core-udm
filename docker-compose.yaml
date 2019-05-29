@@ -1,0 +1,49 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+  db01:
+    image: mongo
+    volumes:
+    - datadb01:/data/db
+    - ./mongod.conf:/etc/mongod.conf
+    ports:
+    - "30001:27017"
+    command: ["mongod", "--config", "/etc/mongod.conf", "--smallfiles", "--logpath=/dev/null"]
+    container_name: db01
+
+  db02:
+    image: mongo
+    volumes:
+    - datadb02:/data/db
+    - ./mongod.conf:/etc/mongod.conf
+    ports:
+    - "30002:27017"
+    command: ["mongod", "--config", "/etc/mongod.conf", "--smallfiles", "--logpath=/dev/null"]
+    container_name: db02
+    depends_on:
+      - db01
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    ports:
+      - 8081:8080
+
+  udm:
+    build: .
+    ports:
+      - 8080:8080
+    links:
+      - db01
+      - db02
+    depends_on:
+      - db01
+      - db02
+      - client
+
+volumes:
+  datadb01:
+  datadb02:
+

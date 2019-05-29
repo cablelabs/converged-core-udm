@@ -1,0 +1,91 @@
+openapi: 3.0.0
+
+info:
+  version: '1.0.0'
+  title: 'Test Client'
+  description: 'Test Client for Subscribing'
+
+servers:
+  - url: '{apiRoot}'
+    variables:
+      apiRoot:
+        default: http://localhost:8080
+
+#security:
+#  - oAuth2ClientCredentials:
+#    - nudm-sdm
+#  - {}
+
+paths:
+  /call-me:
+    post:
+      summary: notification test
+      operationId: client.call_me
+      tags:
+        - Notificaitons
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModificationNotification'
+      responses:
+        '204':
+          description: Successful Notification response
+        default:
+          description: Unexpected error
+
+components:
+  schemas:
+
+# COMPLEX TYPES:
+
+    ModificationNotification:
+      type: object
+      required:
+        - notifyItems
+      properties:
+        notifyItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotifyItem'
+          minItems: 1
+
+    NotifyItem:
+      type: object
+      properties:
+        resourceId:
+          $ref: '#/components/schemas/Uri'
+        changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChangeItem'
+          minItems: 1
+
+    Uri:
+      type: string
+
+    ChangeItem:
+      type: object
+      properties:
+        op:
+          $ref: '#/components/schemas/ChangeType'
+        path:
+          type: string
+        from:
+          type: string
+        origValue: {}
+        newValue: {}
+      required:
+        - op
+        - path
+
+    ChangeType:
+      anyOf:
+        - type: string
+          enum:
+            - ADD
+            - MOVE
+            - REMOVE
+            - REPLACE
+        - type: string

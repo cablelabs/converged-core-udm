@@ -37,7 +37,6 @@ paths:
             $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
         - name: dataset-names
           in: query
-          style: form
           explode: false
           description: List of dataset names
           required: true
@@ -46,10 +45,8 @@ paths:
         - name: plmn-id
           in: query
           description: serving PLMN ID
-          content:
-            application/json:
-              schema:
-                $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
+          schema:
+              $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
         - name: supported-features
           in: query
           description: Supported Features
@@ -116,10 +113,8 @@ paths:
         - name: plmn-id
           in: query
           description: serving PLMN ID
-          content:
-            application/json:
-              schema:
-                $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
+          schema:
+            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
         - name: If-None-Match
           in: header
           description: Validator for conditional requests, as described in RFC 7232, 3.2
@@ -181,10 +176,8 @@ paths:
         - name: plmn-id
           in: query
           description: serving PLMN ID
-          content:
-            application/json:
-              schema:
-                $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
+          schema:
+            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
         - name: If-None-Match
           in: header
           description: Validator for conditional requests, as described in RFC 7232, 3.2
@@ -334,6 +327,50 @@ paths:
           $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
         default:
           description: Unexpected error
+  /test/{supi}:
+    post:
+      summary: testing
+      operationId: app.postTemp
+      tags:
+        - Subscription Testing
+      parameters:
+        - name: supi
+          in: path
+          description: SUPI of the user
+          required: true
+          schema:
+            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionDataSets'
+        required: true
+      responses:
+        '201':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionDataSets'
+          headers:
+            Location:
+              description: 'Contains the URI of the newly created resource, according to the structure: {apiRoot}/nudm-sdm/v1/{supi}/sdm-subscriptions/{subscriptionId}'
+              required: true
+              schema:
+                type: string
+        '400':
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
+        '404':
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/404'
+        '500':
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
+        '501':
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/501'
+        '503':
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
+        default:
+          description: Unexpected error
 
 components:
   securitySchemes:
@@ -359,6 +396,8 @@ components:
     SubscriptionDataSets:
       type: object
       properties:
+        supi:
+          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
         amData:
           $ref: '#/components/schemas/AccessAndMobilitySubscriptionData'
         uecSmfData:
@@ -491,15 +530,17 @@ components:
 # ENUMS:
 
     DataSetName:
-      anyOf:
-        - type: string
-          enum:
-          - AM
-          - SMF_SEL
-          - UEC_SMF
-          - UEC_SMSF
-          - SMS_SUB
-          - SM
-          - TRACE
-          - SMS_MNG
-        - type: string
+      type: string
+
+# anyOf:
+#       - type: string
+#         enum:
+#         - AM
+#         - SMF_SEL
+#         - UEC_SMF
+#         - UEC_SMSF
+#         - SMS_SUB
+#         - SM
+#         - TRACE
+#         - SMS_MNG
+#       - type: string

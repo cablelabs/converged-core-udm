@@ -1,0 +1,65 @@
+{
+  "supi": "02:42:4e:1c:b6:61@cablelabs.net",
+  "amData": {
+    "supportedFeatures": "ATSSS",
+    "subscribedUeAmbr": {
+      "uplink": "10Mbps",
+      "downlink": "100Mbps"
+    },
+    "nssai": {
+      "supportedFeatures": "ATSSS",
+      "defaultSingleNssais": [
+        {
+          "sst": 100,
+          "sd": "Mobile backhaul and eMBB concurrently, where eMBB is the default"
+        }
+      ],
+      "singleNssais": [
+        {
+          "sst": 100,
+          "sd": "Mobile backhaul and eMBB concurrently, where eMBB is the default"
+        }
+      ]
+    },
+    "ratRestrictions": [
+      "DOCSIS"
+    ],
+    "forbiddenAreas": [
+      {
+        "areaCodes": "432"
+      }
+    ],
+    "serviceAreaRestriction": {
+      "restrictionType": "ALLOWED_AREAS",
+      "areas": [
+        {
+        "areaCodes": "256"
+        }
+      ],
+      "maxNumOfTAs": 5
+    },
+    "coreNetworkTypeRestrictions": [
+      "5GC"
+    ]
+  },
+  "uecSmfData": {
+    "pduSessions": {
+      "dnn": "555-55-5555",
+      "smfInstanceId": "394f1119-8724-4084-a839-daf427979ca0",
+      "plmnId": {
+        "mcc": "310",
+        "mnc": "123"
+      }
+    },
+    "pgwInfo": [
+      {
+        "dnn": "444-44-4444",
+        "pgwFqdn": "hello",
+        "plmnId": {
+          "mcc": "310",
+          "mnc": "123"
+        }
+      }
+    ]
+  }
+}
