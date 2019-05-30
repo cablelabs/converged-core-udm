@@ -5,24 +5,10 @@ services:
   db01:
     image: mongo
     volumes:
-    - datadb01:/data/db
-    - ./mongod.conf:/etc/mongod.conf
-    ports:
-    - "30001:27017"
-    command: ["mongod", "--config", "/etc/mongod.conf", "--smallfiles", "--logpath=/dev/null"]
+      - datadb01:/data/db
+      - ./mongod.conf:/etc/mongod.conf
+    command: mongod --smallfiles
     container_name: db01
-
-  db02:
-    image: mongo
-    volumes:
-    - datadb02:/data/db
-    - ./mongod.conf:/etc/mongod.conf
-    ports:
-    - "30002:27017"
-    command: ["mongod", "--config", "/etc/mongod.conf", "--smallfiles", "--logpath=/dev/null"]
-    container_name: db02
-    depends_on:
-      - db01
 
   client:
     build:
@@ -35,12 +21,8 @@ services:
     build: .
     ports:
       - 8080:8080
-    links:
-      - db01
-      - db02
     depends_on:
       - db01
-      - db02
       - client
 
 volumes:
