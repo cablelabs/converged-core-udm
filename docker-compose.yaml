@@ -24,13 +24,6 @@ services:
     depends_on:
       - db01
 
-  client:
-    build:
-      context: .
-      dockerfile: Dockerfile.client
-    ports:
-      - 8081:8080
-
   udm:
     build: .
     ports:
@@ -41,7 +34,15 @@ services:
     depends_on:
       - db01
       - db02
-      - client
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    ports:
+      - 8081:8080
+    depends_on:
+      - udm
 
 volumes:
   datadb01:

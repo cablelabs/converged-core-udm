@@ -4,12 +4,11 @@ import logging
 import os
 import threading
 import uuid
-from pprint import pprint
 from random import randint
 
 import connexion
 from connexion import NoContent
-from pymongo import MongoClient
+from pymongo import MongoClient, errors
 
 cwd = os.getcwd()
 
@@ -32,7 +31,7 @@ import requests
 import urllib3
 
 urllib3.disable_warnings()
-logger = logging.getLogger('drp-session')
+logger = logging.getLogger('app')
 
 
 class Monitor(threading.Thread):
@@ -64,7 +63,7 @@ class Monitor(threading.Thread):
 
     def post(self, body):
         r = requests.post(self.callback, json=body, verify=False)
-        if r.status_code == 201 or r.status_code == 200:
+        if r.status_code == 201 or r.status_code == 200 or r.status_code == 204:
             return r.json()
         else:
             logger.error('Error on Post ' + str(r.status_code))
@@ -128,10 +127,19 @@ def deleteSupiSubscriptionById(supi, subscriptionId):
             monitor['monitor'].stop()
     return NoContent, 204
 
+#
+# UECM Implementations
+#
 
-def putRegistrationAmfNon3gppAccess():
-    return NoContent, 200
 
+def putRegistrationAmfNon3gppAccess(ueId, body):
+    result = db.amf_non3gpp_access.replace_one({'ueId': ueId}, body, True)
+    if result is None:
+        return None, 400
+    else:
+        id = result.upserted_id
+        document = db.amf_non3gpp_access.find_one({'_id': id})
+        return document, 201, {'Location': '/' + ueId + '/registrations/amf-non-3gpp-access/' + document['amfInstanceId'] }
 
 def patchRegistrationAmfNon3gppAccess(ueId, body):
     return NoContent, 200
@@ -155,17 +163,37 @@ try:
 except Exception as e:
     logging.error(e)
 
-# wait for the dbs to come up <grumble>
-from time import sleep
-
-sleep(20)
-
 # connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
+
+replicant = {
+    "_id": "rs0",
+    "members" : [
+        {"_id": 1, "host": "db01:27017"},
+        {"_id": 2, "host": "db02:27017"}
+    ]
+}
+
 client = MongoClient('mongodb://db01:27017/')
+try:
+    status = client.admin.command("replSetGetStatus")
+except errors.OperationFailure:
+    client.admin.command("replSetInitiate", replicant)
+client.close()
+
+client = MongoClient('mongodb://db01:27017/', replicaset='rs0')
 db = client.udm
 
+# Clean out Subscriptions
+with open(cwd + 'sdm.json') as json_file:
+    json_data = json.load(json_file)
+    count = db.supi_sdm_subscriptions.delete_many({'nfInstanceId': json_data['nfInstanceId']}).deleted_count
+    logging.debug(count)
+
+# Clean out and insert primary SUPI
 with open(cwd + 'supi.json') as json_file:
     json_data = json.load(json_file)
+    count = db.subscription_data_sets.delete_many({'supi': json_data['supi']}).deleted_count
+    logging.debug(count)
     db.subscription_data_sets.insert_one(json_data)
 
 if __name__ == '__main__':

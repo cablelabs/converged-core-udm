@@ -1,5 +1,5 @@
 {
-  "supi": "02:42:4e:1c:b6:61@cablelabs.net",
+  "supi": "18d6c7db133a@cablelabs.net",
   "amData": {
     "supportedFeatures": "ATSSS",
     "subscribedUeAmbr": {
@@ -10,14 +10,12 @@
       "supportedFeatures": "ATSSS",
       "defaultSingleNssais": [
         {
-          "sst": 100,
-          "sd": "Mobile backhaul and eMBB concurrently, where eMBB is the default"
+          "sst": 128
         }
       ],
       "singleNssais": [
         {
-          "sst": 100,
-          "sd": "Mobile backhaul and eMBB concurrently, where eMBB is the default"
+          "sst": 128
         }
       ]
     },
