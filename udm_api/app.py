@@ -4,7 +4,6 @@ import logging
 import os
 import threading
 import uuid
-from pprint import pprint
 from random import randint
 
 import connexion
@@ -128,10 +127,19 @@ def deleteSupiSubscriptionById(supi, subscriptionId):
             monitor['monitor'].stop()
     return NoContent, 204
 
+#
+# UECM Implementations
+#
 
-def putRegistrationAmfNon3gppAccess():
-    return NoContent, 200
 
+def putRegistrationAmfNon3gppAccess(ueId, body):
+    result = db.amf_non3gpp_access.replace_one({'ueId': ueId}, body, True)
+    if result is None:
+        return None, 400
+    else:
+        id = result.upserted_id
+        document = db.amf_non3gpp_access.find_one({'_id': id})
+        return document, 201, {'Location': '/' + ueId + '/registrations/amf-non-3gpp-access/' + document['amfInstanceId'] }
 
 def patchRegistrationAmfNon3gppAccess(ueId, body):
     return NoContent, 200
@@ -155,17 +163,31 @@ try:
 except Exception as e:
     logging.error(e)
 
-# wait for the dbs to come up <grumble>
-from time import sleep
-
-sleep(20)
-
 # connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
-client = MongoClient('mongodb://db01:27017/')
-db = client.udm
 
+replicant = {
+    "_id": "rs0",
+    "version": 1,
+    "members" : [
+        {"_id": 1, "host": "db01:27017"},
+        {"_id": 2, "host": "db02:27017"}
+    ]
+}
+client = MongoClient('mongodb://db01:27017/', replicaset='rs0')
+status = client.admin.command("replSetGetStatus")
+if status['set'] is None:
+    client.admin.command("replSetInitiate", replicant)
+
+client2 = MongoClient('mongodb://db02:27017/')
+status2 = client2.admin.command("replSetGetStatus")
+if status2['set'] is None:
+    client2.admin.command("replSetInitiate", replicant)
+client2.close()
+
+db = client.udm
 with open(cwd + 'supi.json') as json_file:
     json_data = json.load(json_file)
+    count = db.subscription_data_sets.delete_many({'supi': json_data['supi']}).deleted_count
     db.subscription_data_sets.insert_one(json_data)
 
 if __name__ == '__main__':

@@ -3,12 +3,11 @@
   "implicitUnsubscribe": false,
   "expires": "2008-09-15T15:53:00",
   "amfServiceName": "Special Service",
-  "callbackUri": "http://localhost:5000/call-me",
+  "callbackUri": "http://client:8080/call-me",
   "monitoredResourceUri": [
-    "http://localhost:6000/monitor-me"
+    "/02:42:4e:1c:b6:61@cablelabs.net"
   ],
   "singleNssai": {
-    "sst": 100,
-    "sd": "Mobile backhaul and eMBB concurrently, where eMBB is the default"
+    "sst": 128
   }
 }
