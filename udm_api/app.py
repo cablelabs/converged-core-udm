@@ -197,8 +197,6 @@ with open(cwd + 'supi.json') as json_file:
     json_data = json.load(json_file)
     count = db.subscription_data_sets.delete_many({'supi': json_data['supi']}).deleted_count
     logging.debug(count)
-    count = db.supi_sdm_subscriptions.delete_many({'nfInstanceId': json_data['supi']}).deleted_count
-    logging.debug(count)
     db.subscription_data_sets.insert_one(json_data)
 
 if __name__ == '__main__':
