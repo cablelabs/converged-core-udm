@@ -8,7 +8,7 @@ from random import randint
 
 import connexion
 from connexion import NoContent
-from pymongo import MongoClient
+from pymongo import MongoClient, errors
 
 cwd = os.getcwd()
 
@@ -31,7 +31,7 @@ import requests
 import urllib3
 
 urllib3.disable_warnings()
-logger = logging.getLogger('drp-session')
+logger = logging.getLogger('app')
 
 
 class Monitor(threading.Thread):
@@ -63,7 +63,7 @@ class Monitor(threading.Thread):
 
     def post(self, body):
         r = requests.post(self.callback, json=body, verify=False)
-        if r.status_code == 201 or r.status_code == 200:
+        if r.status_code == 201 or r.status_code == 200 or r.status_code == 204:
             return r.json()
         else:
             logger.error('Error on Post ' + str(r.status_code))
@@ -167,23 +167,20 @@ except Exception as e:
 
 replicant = {
     "_id": "rs0",
-    "version": 1,
     "members" : [
         {"_id": 1, "host": "db01:27017"},
         {"_id": 2, "host": "db02:27017"}
     ]
 }
-client = MongoClient('mongodb://db01:27017/', replicaset='rs0')
-status = client.admin.command("replSetGetStatus")
-if status['set'] is None:
+
+client = MongoClient('mongodb://db01:27017/')
+try:
+    status = client.admin.command("replSetGetStatus")
+except errors.OperationFailure:
     client.admin.command("replSetInitiate", replicant)
+client.close()
 
-client2 = MongoClient('mongodb://db02:27017/')
-status2 = client2.admin.command("replSetGetStatus")
-if status2['set'] is None:
-    client2.admin.command("replSetInitiate", replicant)
-client2.close()
-
+client = MongoClient('mongodb://db01:27017/', replicaset='rs0')
 db = client.udm
 
 # Clean out Subscriptions

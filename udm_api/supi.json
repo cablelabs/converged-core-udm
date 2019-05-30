@@ -10,14 +10,12 @@
       "supportedFeatures": "ATSSS",
       "defaultSingleNssais": [
         {
-          "sst": 100,
-          "sd": "Mobile backhaul and eMBB concurrently, where eMBB is the default"
+          "sst": 128
         }
       ],
       "singleNssais": [
         {
-          "sst": 100,
-          "sd": "Mobile backhaul and eMBB concurrently, where eMBB is the default"
+          "sst": 128
         }
       ]
     },
