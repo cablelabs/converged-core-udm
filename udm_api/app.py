@@ -133,20 +133,47 @@ def deleteSupiSubscriptionById(supi, subscriptionId):
 
 
 def putRegistrationAmfNon3gppAccess(ueId, body):
+    body['ueId'] = ueId
     result = db.amf_non3gpp_access.replace_one({'ueId': ueId}, body, True)
     if result is None:
-        return None, 400
+        return NoContent, 400
     else:
         id = result.upserted_id
         document = db.amf_non3gpp_access.find_one({'_id': id})
-        return document, 201, {'Location': '/' + ueId + '/registrations/amf-non-3gpp-access/' + document['amfInstanceId'] }
+        del document['_id']
+        return document, 201, {'Location': '/' + ueId + '/registrations/amf-non-3gpp-access' }
 
 def patchRegistrationAmfNon3gppAccess(ueId, body):
-    return NoContent, 200
+    body['ueId'] = ueId
+    if body['pei'] is not None and body['purgeFlag'] is not None:
+        result = db.amf_non3gpp_access.update_one({'ueId': ueId}, {'$set': {'guami': body['guami']},
+                                                                   '$set': {'pei': body['pei']},
+                                                                   '$set': {'purgeFlag': body['purgeFlag']}
+                                                                   })
+    elif body['pei'] is not None:
+        result = db.amf_non3gpp_access.update_one({'ueId': ueId}, {'$set': {'guami': body['guami']},
+                                                                   '$set': {'pei': body['pei']}
+                                                                   })
+    elif body['purgeFlag'] is not None:
+        result = db.amf_non3gpp_access.update_one({'ueId': ueId}, {'$set': {'guami': body['guami']},
+                                                                   '$set': {'purgeFlag': body['purgeFlag']}
+                                                                   })
+    else:
+        result = db.amf_non3gpp_access.update_one({'ueId': ueId}, {'$set': {'guami': body['guami']}})
+    logging.info(result)
+    document = db.amf_non3gpp_access.find_one({'ueId': ueId})
+    del document['_id']
+    return document, 200
 
 
 def getRegistrationAmfNon3gppAccess(ueId):
-    return NoContent, 200
+
+    document = db.amf_non3gpp_access.find_one({'ueId': ueId})
+    if document is None:
+        return NoContent, 404
+    else:
+        del document['_id']
+        return document, 200
 
 
 monitor_map = []
