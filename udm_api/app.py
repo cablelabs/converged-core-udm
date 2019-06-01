@@ -9,6 +9,15 @@ from random import randint
 import connexion
 from connexion import NoContent
 from pymongo import MongoClient, errors
+import requests
+import urllib3
+
+
+from yaml import load, dump
+try:
+    from yaml import CLoader as Loader, CDumper as Dumper
+except ImportError:
+    from yaml import Loader, Dumper
 
 cwd = os.getcwd()
 
@@ -26,11 +35,8 @@ cwd = os.getcwd()
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-import requests
-import urllib3
-
 urllib3.disable_warnings()
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('app')
 
 
@@ -47,7 +53,7 @@ class Monitor(threading.Thread):
         while self.running:
             with self.db.subscription_data_sets.watch([], full_document='default') as stream:
                 for change in stream:
-                    logging.info(change)
+                    logger.info(change)
                     changes = []
                     for k, v in change['updateDescription']['updatedFields'].items():
                         changeItem = dict(op='MOVE', path=k, newValue=v)
@@ -55,7 +61,7 @@ class Monitor(threading.Thread):
                     notifyItem = dict(resourceId='/' + self.supi, changes=changes)
                     notifyItems = [notifyItem]
                     document = dict(notifyItems=notifyItems)
-                    logging.info(document)
+                    logger.info(document)
                     self.post(document)
 
     def stop(self):
@@ -87,7 +93,7 @@ def getSupiById(supi):
 
 def postTemp(supi):
     result = db.subscription_data_sets.update_one({'supi': supi}, {'$set': {'x': randint(0, 100)}})
-    logging.info(result.modified_count)
+    logger.info(result.modified_count)
     return result.modified_count, 201
 
 
@@ -138,36 +144,36 @@ def putRegistrationAmfNon3gppAccess(ueId, body):
     if result is None:
         return NoContent, 400
     else:
-        id = result.upserted_id
-        document = db.amf_non3gpp_access.find_one({'_id': id})
-        del document['_id']
+        document = db.amf_non3gpp_access.find_one({'ueId': ueId})
+        if document.get('_id') is not None:
+            del document['_id']
         return document, 201, {'Location': '/' + ueId + '/registrations/amf-non-3gpp-access' }
 
 def patchRegistrationAmfNon3gppAccess(ueId, body):
     body['ueId'] = ueId
-    if body['pei'] is not None and body['purgeFlag'] is not None:
+    if body.get('pei') is not None and body.get('purgeFlag') is not None:
         result = db.amf_non3gpp_access.update_one({'ueId': ueId}, {'$set': {'guami': body['guami']},
                                                                    '$set': {'pei': body['pei']},
                                                                    '$set': {'purgeFlag': body['purgeFlag']}
                                                                    })
-    elif body['pei'] is not None:
+    elif body.get('pei') is not None:
         result = db.amf_non3gpp_access.update_one({'ueId': ueId}, {'$set': {'guami': body['guami']},
                                                                    '$set': {'pei': body['pei']}
                                                                    })
-    elif body['purgeFlag'] is not None:
+    elif body.get('purgeFlag') is not None:
         result = db.amf_non3gpp_access.update_one({'ueId': ueId}, {'$set': {'guami': body['guami']},
                                                                    '$set': {'purgeFlag': body['purgeFlag']}
                                                                    })
     else:
         result = db.amf_non3gpp_access.update_one({'ueId': ueId}, {'$set': {'guami': body['guami']}})
-    logging.info(result)
+    logger.info(result)
     document = db.amf_non3gpp_access.find_one({'ueId': ueId})
-    del document['_id']
+    if document.get('_id') is not None:
+        del document['_id']
     return document, 200
 
 
 def getRegistrationAmfNon3gppAccess(ueId):
-
     document = db.amf_non3gpp_access.find_one({'ueId': ueId})
     if document is None:
         return NoContent, 404
@@ -176,19 +182,39 @@ def getRegistrationAmfNon3gppAccess(ueId):
         return document, 200
 
 
+with open('/openapi/' + 'TS29571_CommonData.yaml') as cmm_file:
+    cmm_data = load(cmm_file, Loader=Loader)
+
+with open('/openapi/' + 'TS29503_Nudm_SDM.yaml') as sdm_file:
+    sdm_data = load(sdm_file, Loader=Loader)
+
+with open('/openapi/' + 'TS29503_Nudm_UECM.yaml') as uecm_file:
+    uecm_data = load(uecm_file, Loader=Loader)
+
+sdm_data['components']['schemas'].update(cmm_data['components']['schemas'])
+sdm_data['components']['responses'] = cmm_data['components']['responses']
+
+uecm_data['components']['schemas'].update(cmm_data['components']['schemas'])
+uecm_data['components']['responses'] = cmm_data['components']['responses']
+
+
+sdm_out_file = open('/openapi/sdm_full.yaml', 'w')
+dump(sdm_data, sdm_out_file)
+uecm_out_file = open('/openapi/uecm_full.yaml', 'w')
+dump(uecm_data, uecm_out_file)
+
 monitor_map = []
-logging.basicConfig(level=logging.INFO)
 spec = '/openapi/'
 try:
-    app = connexion.App(__name__, specification_dir=spec)
-    app.add_api('TS29503_Nudm_UECM.yaml')
-    app.add_api('TS29503_Nudm_SDM.yaml')
+    app = connexion.App(__name__, specification_dir=spec, debug=True)
+    app.add_api('uecm_full.yaml')
+    app.add_api('sdm_full.yaml')
 
     # set the WSGI application callable to allow using uWSGI:
     # uwsgi --http :8080 -w app
     application = app.app
 except Exception as e:
-    logging.error(e)
+    logger.error(e)
 
 # connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
 
@@ -214,14 +240,15 @@ db = client.udm
 with open(cwd + 'sdm.json') as json_file:
     json_data = json.load(json_file)
     count = db.supi_sdm_subscriptions.delete_many({'nfInstanceId': json_data['nfInstanceId']}).deleted_count
-    logging.debug(count)
+    logger.debug(count)
 
 # Clean out and insert primary SUPI
 with open(cwd + 'supi.json') as json_file:
     json_data = json.load(json_file)
     count = db.subscription_data_sets.delete_many({'supi': json_data['supi']}).deleted_count
-    logging.debug(count)
+    logger.debug(count)
     db.subscription_data_sets.insert_one(json_data)
+
 
 if __name__ == '__main__':
     # run our standalone gevent server
