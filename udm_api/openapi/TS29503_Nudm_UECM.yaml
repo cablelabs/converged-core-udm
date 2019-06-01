@@ -208,26 +208,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BackupAmfInfo'
-    Guami:
-      type: object
-      properties:
-        plmnId:
-          $ref: '#/components/schemas/PlmnId'
-        amfId:
-          $ref: '#/components/schemas/AmfId'
-      required:
-        - plmnId
-        - amfId
-    PlmnId:
-      type: object
-      properties:
-        mcc:
-          $ref: '#/components/schemas/Mcc'
-        mnc:
-          $ref: '#/components/schemas/Mnc'
-      required:
-        - mcc
-        - mnc
 
 # SIMPLE TYPES:
 
