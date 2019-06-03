@@ -69,8 +69,10 @@ class Monitor(threading.Thread):
 
     def post(self, body):
         r = requests.post(self.callback, json=body, verify=False)
-        if r.status_code == 201 or r.status_code == 200 or r.status_code == 204:
+        if r.status_code == 201 or r.status_code == 200:
             return r.json()
+        elif r.status_code == 204:
+            return None
         else:
             logger.error('Error on Post ' + str(r.status_code))
             temp = r.json()
