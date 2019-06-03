@@ -34,7 +34,7 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
+            $ref: '#/components/schemas/Supi'
         - name: dataset-names
           in: query
           explode: false
@@ -46,12 +46,12 @@ paths:
           in: query
           description: serving PLMN ID
           schema:
-              $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
+              $ref: '#/components/schemas/PlmnId'
         - name: supported-features
           in: query
           description: Supported Features
           schema:
-             $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
+             $ref: '#/components/schemas/SupportedFeatures'
         - name: If-None-Match
           in: header
           description: Validator for conditional requests, as described in RFC 7232, 3.2
@@ -83,13 +83,13 @@ paths:
               schema:
                 type: string
         '400':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
+          $ref: '#/components/responses/400'
         '404':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
         '500':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
+          $ref: '#/components/responses/500'
         '503':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
+          $ref: '#/components/responses/503'
         default:
           description: Unexpected error
   /{supi}/nssai:
@@ -104,17 +104,17 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
+            $ref: '#/components/schemas/Supi'
         - name: supported-features
           in: query
           description: Supported Features
           schema:
-             $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
+             $ref: '#/components/schemas/SupportedFeatures'
         - name: plmn-id
           in: query
           description: serving PLMN ID
           schema:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
+            $ref: '#/components/schemas/PlmnId'
         - name: If-None-Match
           in: header
           description: Validator for conditional requests, as described in RFC 7232, 3.2
@@ -146,13 +146,13 @@ paths:
               schema:
                 type: string
         '400':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
+          $ref: '#/components/responses/400'
         '404':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
         '500':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
+          $ref: '#/components/responses/500'
         '503':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
+          $ref: '#/components/responses/503'
         default:
           description: Unexpected error
   /{supi}/am-data:
@@ -167,17 +167,17 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
+            $ref: '#/components/schemas/Supi'
         - name: supported-features
           in: query
           description: Supported Features
           schema:
-             $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
+             $ref: '#/components/schemas/SupportedFeatures'
         - name: plmn-id
           in: query
           description: serving PLMN ID
           schema:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
+            $ref: '#/components/schemas/PlmnId'
         - name: If-None-Match
           in: header
           description: Validator for conditional requests, as described in RFC 7232, 3.2
@@ -209,13 +209,13 @@ paths:
               schema:
                 type: string
         '400':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
+          $ref: '#/components/responses/400'
         '404':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
         '500':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
+          $ref: '#/components/responses/500'
         '503':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
+          $ref: '#/components/responses/503'
         default:
           description: Unexpected error
   /{supi}/sdm-subscriptions:
@@ -230,7 +230,7 @@ paths:
           description: SUPI of the user
           required: true
           schema:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
+            $ref: '#/components/schemas/Supi'
       requestBody:
         content:
           application/json:
@@ -251,15 +251,15 @@ paths:
               schema:
                 type: string
         '400':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
+          $ref: '#/components/responses/400'
         '404':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
         '500':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
+          $ref: '#/components/responses/500'
         '501':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/501'
+          $ref: '#/components/responses/501'
         '503':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
+          $ref: '#/components/responses/503'
         default:
           description: Unexpected error
       callbacks:
@@ -280,21 +280,21 @@ paths:
                   content:
                     application/problem+json:
                       schema:
-                        $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/ProblemDetails'
+                        $ref: '#/components/schemas/ProblemDetails'
                 '308':
                   description: Permanent Redirect
                   content:
                     application/problem+json:
                       schema:
-                        $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/ProblemDetails'
+                        $ref: '#/components/schemas/ProblemDetails'
                 '400':
-                  $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
+                  $ref: '#/components/responses/400'
                 '404':
-                  $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/404'
+                  $ref: '#/components/responses/404'
                 '500':
-                  $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
+                  $ref: '#/components/responses/500'
                 '503':
-                  $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
+                  $ref: '#/components/responses/503'
                 default:
                   description: Unexpected error
   /{supi}/sdm-subscriptions/{subscriptionId}:
@@ -309,7 +309,7 @@ paths:
           description: SUPI of the user
           required: true
           schema:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
+            $ref: '#/components/schemas/Supi'
         - name: subscriptionId
           in: path
           description: Id of the SDM Subscription
@@ -320,11 +320,11 @@ paths:
         '204':
           description: Successful response
         '400':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
+          $ref: '#/components/responses/400'
         '500':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
+          $ref: '#/components/responses/500'
         '503':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
+          $ref: '#/components/responses/503'
         default:
           description: Unexpected error
   /test/{supi}:
@@ -339,7 +339,7 @@ paths:
           description: SUPI of the user
           required: true
           schema:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
+            $ref: '#/components/schemas/Supi'
       requestBody:
         content:
           application/json:
@@ -360,15 +360,15 @@ paths:
               schema:
                 type: string
         '400':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
+          $ref: '#/components/responses/400'
         '404':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
         '500':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
+          $ref: '#/components/responses/500'
         '501':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/501'
+          $ref: '#/components/responses/501'
         '503':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
+          $ref: '#/components/responses/503'
         default:
           description: Unexpected error
 
@@ -397,7 +397,7 @@ components:
       type: object
       properties:
         supi:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
+          $ref: '#/components/schemas/Supi'
         amData:
           $ref: '#/components/schemas/AccessAndMobilitySubscriptionData'
         uecSmfData:
@@ -407,25 +407,25 @@ components:
       type: object
       properties:
         supportedFeatures:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
+          $ref: '#/components/schemas/SupportedFeatures'
         subscribedUeAmbr:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/AmbrRm'
+          $ref: '#/components/schemas/AmbrRm'
         nssai:
           $ref: '#/components/schemas/Nssai'
         ratRestrictions:
           type: array
           items:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/RatType'
+            $ref: '#/components/schemas/RatType'
         forbiddenAreas:
           type: array
           items:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Area'
+            $ref: '#/components/schemas/Area'
         serviceAreaRestriction:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/ServiceAreaRestriction'
+          $ref: '#/components/schemas/ServiceAreaRestriction'
         coreNetworkTypeRestrictions:
           type: array
           items:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/CoreNetworkType'
+            $ref: '#/components/schemas/CoreNetworkType'
 
     Nssai:
       type: object
@@ -433,16 +433,16 @@ components:
        - defaultSingleNssais
       properties:
         supportedFeatures:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
+          $ref: '#/components/schemas/SupportedFeatures'
         defaultSingleNssais:
           type: array
           items:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Snssai'
+            $ref: '#/components/schemas/Snssai'
           minItems: 1
         singleNssais:
           type: array
           items:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Snssai'
+            $ref: '#/components/schemas/Snssai'
           minItems: 1
       nullable: true
 
@@ -468,11 +468,11 @@ components:
         - plmnId
       properties:
         dnn:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Dnn'
+          $ref: '#/components/schemas/Dnn'
         smfInstanceId:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/NfInstanceId'
+          $ref: '#/components/schemas/NfInstanceId'
         plmnId:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
+          $ref: '#/components/schemas/PlmnId'
 
     PgwInfo:
       type: object
@@ -481,11 +481,11 @@ components:
         - pgwFqdn
       properties:
         dnn:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Dnn'
+          $ref: '#/components/schemas/Dnn'
         pgwFqdn:
           type: string
         plmnId:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/PlmnId'
+          $ref: '#/components/schemas/PlmnId'
 
     SdmSubscription:
       type: object
@@ -495,22 +495,22 @@ components:
         - monitoredResourceUri
       properties:
         nfInstanceId:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/NfInstanceId'
+          $ref: '#/components/schemas/NfInstanceId'
         implicitUnsubscribe:
           type: boolean
         expires:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/DateTime'
+          $ref: '#/components/schemas/DateTime'
         amfServiceName:
           $ref: '#/components/schemas/ServiceName'
         callbackUri:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Uri'
+          $ref: '#/components/schemas/Uri'
         monitoredResourceUri:
           type: array
           items:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Uri'
+            $ref: '#/components/schemas/Uri'
           minItems: 1
         singleNssai:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Snssai'
+          $ref: '#/components/schemas/Snssai'
 
     ModificationNotification:
       type: object
@@ -520,7 +520,7 @@ components:
         notifyItems:
           type: array
           items:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/NotifyItem'
+            $ref: '#/components/schemas/NotifyItem'
           minItems: 1
 
 # SIMPLE TYPES:
@@ -528,19 +528,14 @@ components:
       type: string
 
 # ENUMS:
-
     DataSetName:
       type: string
-
-# anyOf:
-#       - type: string
-#         enum:
-#         - AM
-#         - SMF_SEL
-#         - UEC_SMF
-#         - UEC_SMSF
-#         - SMS_SUB
-#         - SM
-#         - TRACE
-#         - SMS_MNG
-#       - type: string
+      enum:
+        - AM
+        - SMF_SEL
+        - UEC_SMF
+        - UEC_SMSF
+        - SMS_SUB
+        - SM
+        - TRACE
+        - SMS_MNG

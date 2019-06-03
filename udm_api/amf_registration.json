@@ -1,0 +1,16 @@
+{
+  "amfInstanceId": "394f1119-8724-4084-a839-daf427979ca2",
+  "supportedFeatures": "AAA123",
+  "purgeFlag": false,
+  "pei": "18d6c7db133a",
+  "imsVoPs": "HOMOGENEOUS_SUPPORT",
+  "deregCallbackUri": "http://client:8080/call-me",
+  "guami": {
+    "plmnId": {
+      "mcc": "310",
+      "mnc": "123"
+    },
+    "amfId": "ABC123"
+  },
+  "ratType": "DOCSIS"
+}

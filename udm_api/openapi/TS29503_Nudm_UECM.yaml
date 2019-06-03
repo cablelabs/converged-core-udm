@@ -34,7 +34,7 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
+            $ref: '#/components/schemas/Supi'
       requestBody:
         content:
           application/json:
@@ -63,15 +63,15 @@ paths:
         '204':
           description: No Content
         '400':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
+          $ref: '#/components/responses/400'
         '403':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
         '500':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
+          $ref: '#/components/responses/500'
         '503':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
+          $ref: '#/components/responses/503'
         default:
           description: Unexpected error
     patch:
@@ -85,7 +85,7 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Supi'
+            $ref: '#/components/schemas/Supi'
       requestBody:
         content:
           application/merge-patch+json:
@@ -96,19 +96,19 @@ paths:
         '204':
           description: Expected response to a valid request
         '400':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
+          $ref: '#/components/responses/400'
         '404':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
         '422':
           description: Unprocessable Request
           content:
             application/problem+json:
               schema:
-                $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/ProblemDetails'
+                $ref: '#/components/schemas/ProblemDetails'
         '500':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
+          $ref: '#/components/responses/500'
         '503':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
+          $ref: '#/components/responses/503'
         default:
           description: Unexpected error
     get:
@@ -122,11 +122,11 @@ paths:
           description: Identifier of the UE
           required: true
           schema:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Gpsi'
+            $ref: '#/components/schemas/Gpsi'
         - name: supported-features
           in: query
           schema:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
+            $ref: '#/components/schemas/SupportedFeatures'
       responses:
         '200':
           description: Expected response to a valid request
@@ -135,15 +135,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/AmfNon3GppAccessRegistration'
         '400':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/400'
+          $ref: '#/components/responses/400'
         '403':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/403'
+          $ref: '#/components/responses/403'
         '404':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/404'
+          $ref: '#/components/responses/404'
         '500':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/500'
+          $ref: '#/components/responses/500'
         '503':
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/responses/503'
+          $ref: '#/components/responses/503'
         default:
           description: Unexpected error
 
@@ -171,26 +171,26 @@ components:
         - ratType
       properties:
         amfInstanceId:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/NfInstanceId'
+          $ref: '#/components/schemas/NfInstanceId'
         supportedFeatures:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
+          $ref: '#/components/schemas/SupportedFeatures'
         purgeFlag:
           $ref: '#/components/schemas/PurgeFlag'
         pei:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Pei'
+          $ref: '#/components/schemas/Pei'
         imsVoPs:
           $ref: '#/components/schemas/ImsVoPs'
         deregCallbackUri:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Uri'
+          $ref: '#/components/schemas/Uri'
         guami:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Guami'
+          $ref: '#/components/schemas/Guami'
         backupAmfInfo:
           type: array
           items:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/BackupAmfInfo'
-          minItems: 1
+            $ref: '#/components/schemas/BackupAmfInfo'
+          minItems: 0
         ratType:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/RatType'
+          $ref: '#/components/schemas/RatType'
 
 
     AmfNon3GppAccessRegistrationModification:
@@ -199,15 +199,15 @@ components:
         - guami
       properties:
         guami:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Guami'
+          $ref: '#/components/schemas/Guami'
         purgeFlag:
           $ref: '#/components/schemas/PurgeFlag'
         pei:
-          $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/Pei'
+          $ref: '#/components/schemas/Pei'
         backupAmfInfo:
           type: array
           items:
-            $ref: 'file:///openapi/TS29571_CommonData.yaml#/components/schemas/BackupAmfInfo'
+            $ref: '#/components/schemas/BackupAmfInfo'
 
 # SIMPLE TYPES:
 
