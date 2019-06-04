@@ -130,9 +130,15 @@ def postSupiSdmSubscriptions(supi, body):
 
 
 def deleteSupiSubscriptionById(supi, subscriptionId):
+    logger.info(f"Requested subscription deletion for {subscriptionId}")
+    logger.debug(f"monitor_map: {monitor_map}")
     for monitor in monitor_map:
-        if monitor['subscriptionId'] is subscriptionId:
+        if subscriptionId == str(monitor['subscriptionId']):
+            logger.info(f"Unsubscribing {subscriptionId}")
             monitor['monitor'].stop()
+            break
+    else:
+        logger.info("Subscription not found.")
     return NoContent, 204
 
 #
