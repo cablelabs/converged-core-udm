@@ -48,29 +48,35 @@ class Monitor(threading.Thread):
         self.subscriptionId = subscriptionId
         self.running = True
         self.callback = callback
+        self.stream = None
 
     def run(self):
-        while self.running:
-            with self.db.subscription_data_sets.watch([], full_document='default') as stream:
-                for change in stream:
-                    logger.info(change)
-                    changes = []
-                    for k, v in change['updateDescription']['updatedFields'].items():
-                        changeItem = dict(op='MOVE', path=k, newValue=v)
-                        changes.append(changeItem)
-                    notifyItem = dict(resourceId='/' + self.supi, changes=changes)
-                    notifyItems = [notifyItem]
-                    document = dict(notifyItems=notifyItems)
-                    logger.info(document)
-                    self.post(document)
+        with self.db.subscription_data_sets.watch([], full_document='default') as self.stream:
+            for change in self.stream:
+                logger.debug(change)
+                changes = []
+                for k, v in change['updateDescription']['updatedFields'].items():
+                    changeItem = dict(op='MOVE', path=k, newValue=v)
+                    changes.append(changeItem)
+                notifyItem = dict(resourceId='/' + self.supi, changes=changes)
+                notifyItems = [notifyItem]
+                document = dict(notifyItems=notifyItems)
+                logger.info(document)
+                self.post(document)
 
     def stop(self):
+        logger.info('Removing Monitor for %s' % self.subscriptionId)
         self.running = False
+        if self.stream is not None:
+            self.stream.close()
+            logger.info('Stream closed')
 
     def post(self, body):
         r = requests.post(self.callback, json=body, verify=False)
-        if r.status_code == 201 or r.status_code == 200 or r.status_code == 204:
+        if r.status_code == 201 or r.status_code == 200:
             return r.json()
+        elif r.status_code == 204:
+            return
         else:
             logger.error('Error on Post ' + str(r.status_code))
             temp = r.json()
@@ -128,8 +134,11 @@ def postSupiSdmSubscriptions(supi, body):
 
 
 def deleteSupiSubscriptionById(supi, subscriptionId):
+    logger.info('Deleting Subscription')
     for monitor in monitor_map:
-        if monitor['subscriptionId'] is subscriptionId:
+        logger.info('%r' % monitor)
+        if subscriptionId == str(monitor['subscriptionId']):
+            logger.info('Stopping')
             monitor['monitor'].stop()
     return NoContent, 204
 
