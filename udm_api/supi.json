@@ -1,13 +1,13 @@
 {
   "supi": "18d6c7db133a@cablelabs.net",
   "amData": {
-    "supportedFeatures": "ATSSS",
+    "supportedFeatures": "000000",
     "subscribedUeAmbr": {
       "uplink": "10Mbps",
       "downlink": "100Mbps"
     },
     "nssai": {
-      "supportedFeatures": "ATSSS",
+      "supportedFeatures": "000000",
       "defaultSingleNssais": [
         {
           "sst": 128
