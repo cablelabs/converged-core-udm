@@ -3,8 +3,8 @@
   "amData": {
     "supportedFeatures": "000000",
     "subscribedUeAmbr": {
-      "uplink": "10Mbps",
-      "downlink": "100Mbps"
+      "uplink": "10 Mbps",
+      "downlink": "100 Mbps"
     },
     "nssai": {
       "supportedFeatures": "000000",
@@ -42,7 +42,7 @@
   },
   "uecSmfData": {
     "pduSessions": {
-      "pduId1": {
+      "1": {
         "dnn": "555-55-5555",
         "smfInstanceId": "394f1119-8724-4084-a839-daf427979ca0",
         "plmnId": {
