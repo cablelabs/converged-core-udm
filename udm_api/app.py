@@ -97,6 +97,29 @@ def getSupiById(supi):
         return document, 200
 
 
+def postSupi(body):
+    supi = body.get('supi')
+    result = db.subscription_data_sets.insert_one(body)
+    if result is None:
+        return NoContent, 400
+    else:
+        document = db.subscription_data_sets.find_one({'supi': supi})
+        if document.get('_id') is not None:
+            del document['_id']
+        return document, 201, {'Location': '/' + supi}
+
+
+def putSupi(supi, body):
+    result = db.subscription_data_sets.replace_one({'supi': supi}, body, True)
+    if result is None:
+        return NoContent, 400
+    else:
+        document = db.subscription_data_sets.find_one({'supi': supi})
+        if document.get('_id') is not None:
+            del document['_id']
+        return document, 201, {'Location': '/' + supi}
+
+
 def postTemp(supi):
     result = db.subscription_data_sets.update_one({'supi': supi}, {'$set': {'x': randint(0, 100)}})
     logger.info(result.modified_count)

@@ -31,7 +31,7 @@
       "restrictionType": "ALLOWED_AREAS",
       "areas": [
         {
-        "areaCodes": "256"
+          "areaCodes": "256"
         }
       ],
       "maxNumOfTAs": 5
@@ -42,11 +42,13 @@
   },
   "uecSmfData": {
     "pduSessions": {
-      "dnn": "555-55-5555",
-      "smfInstanceId": "394f1119-8724-4084-a839-daf427979ca0",
-      "plmnId": {
-        "mcc": "310",
-        "mnc": "123"
+      "pduId1": {
+        "dnn": "555-55-5555",
+        "smfInstanceId": "394f1119-8724-4084-a839-daf427979ca0",
+        "plmnId": {
+          "mcc": "310",
+          "mnc": "123"
+        }
       }
     },
     "pgwInfo": [
