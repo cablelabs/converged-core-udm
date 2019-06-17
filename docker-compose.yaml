@@ -26,6 +26,7 @@ services:
 
   udm:
     build: .
+    image: convergedcore/udm_api
     ports:
       - 8080:8080
     links:
