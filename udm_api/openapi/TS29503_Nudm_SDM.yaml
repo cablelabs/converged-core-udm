@@ -22,7 +22,85 @@ servers:
 #  - {}
 
 paths:
+  /:
+    post:
+      summary: testing
+      operationId: app.postSupi
+      tags:
+        - Subscription Populate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionDataSets'
+        required: true
+      responses:
+        '201':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionDataSets'
+          headers:
+            Location:
+              description: 'Contains the URI of the newly created resource, according to the structure: {apiRoot}/nudm-sdm/v1/{supi}/sdm-subscriptions/{subscriptionId}'
+              required: true
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '501':
+          $ref: '#/components/responses/501'
+        '503':
+          $ref: '#/components/responses/503'
+        default:
+          description: Unexpected error
   /{supi}:
+    put:
+      summary: retrieve multiple data sets
+      operationId: app.putSupi
+      tags:
+        - PUT of multiple data sets
+      parameters:
+        - name: supi
+          in: path
+          description: Identifier of the UE
+          required: true
+          schema:
+            $ref: '#/components/schemas/Supi'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionDataSets'
+        required: true
+      responses:
+        '201':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionDataSets'
+          headers:
+            Location:
+              description: 'Contains the URI of the newly updated resource, according to the structure: {apiRoot}/nudm-sdm/v1/{supi}'
+              required: true
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        default:
+          description: Unexpected error
     get:
       summary: retrieve multiple data sets
       operationId: app.getSupiById

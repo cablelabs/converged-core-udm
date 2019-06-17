@@ -1022,11 +1022,6 @@ components:
           $ref: '#/components/schemas/5QiPriorityLevel'
     Area:
       type: object
-      oneOf:
-        - required:
-          - tacs
-        - required:
-          - areaCode
       properties:
         tacs:
           type: array
